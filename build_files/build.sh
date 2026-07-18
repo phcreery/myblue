@@ -10,8 +10,19 @@ cp -avf "/ctx/system_files"/. /
 ### Install packages
 /ctx/build_files/00-packages.sh
 
+# Nvidia AKMODS
+# if [[ "${IMAGE_NAME}" =~ nvidia ]]; then
+# /ctx/build_files/01-nvidia-akmods.sh
+# fi
+
+
 ### Install linux-surface kernel and support
-/ctx/build_files/01-surface.sh
+# if [[ "${IMAGE_NAME}" =~ surface ]]; then
+/ctx/build_files/02-surface.sh
+# fi
+
+### Install flatpacks
+/ctx/build_files/03-flatpacks.sh
 
 #### Example for enabling a System Unit File
 # systemctl enable podman.socket

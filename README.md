@@ -4,47 +4,35 @@ my personal fedora image
 
 This repository is meant to be a template for building your own custom [bootc](https://github.com/bootc-dev/bootc) image. This template is the recommended way to make customizations to any image published by the Universal Blue Project.
 
-
 ## Inspo
 
-- https://github.com/LorbusChris/bluespin
+Working base
+- https://github.com/ublue-os/bluefin/pkgs/container/bluefin-hwe-nvidia
+
+- https://github.com/LorbusChris/bluespin Surface support
 - https://github.com/bsherman/bos
+- https://github.com/wayblueorg/wayblue
+
+Commit of bluefin-hwe-surface before it was removed
+- https://github.com/ublue-os/bluefin/tree/ed86f18028db2a016033026315a71a933263b69e
+- https://github.com/ublue-os/bluefin/blob/ed86f18028db2a016033026315a71a933263b69e/build_files/base/09-hwe-additions.sh
+- https://github.com/ublue-os/bluefin/blob/ed86f18028db2a016033026315a71a933263b69e/build_files/base/03-install-kernel-akmods.sh
+- https://github.com/ublue-os/bluefin/blob/main/build_files/base/03-install-kernel-akmods.sh
 
 
-Base Images
+## Surface
+See
+- https://github.com/linux-surface/linux-surface/wiki/Installation-and-Setup#fedora-silverblue
+- https://github.com/linux-surface/linux-surface/issues/1666
 
-- Bazzite: `ghcr.io/ublue-os/bazzite:stable`
-- Aurora: `ghcr.io/ublue-os/aurora:stable`
-- Bluefin: `ghcr.io/ublue-os/bluefin:stable`
-- Universal Blue Base: `ghcr.io/ublue-os/base-main:latest`
-- Fedora: `quay.io/fedora/fedora-bootc:44`
-
-You can find more Universal Blue images on the [packages page](https://github.com/orgs/ublue-os/packages).
-</details>
-
-If you don't know which image to pick, choosing the one your system is currently on is the best bet for a smooth transition. To find out what image your system currently uses, run the following command:
-```bash
-sudo bootc status
-```
-This will show you all the info you need to know about your current image. The image you are currently on is displayed after `Booted image:`. Paste that information after the `FROM` statement in the Containerfile to set it as your base image.
-
-### Step 2c: Changing Names
-
-Change the `IMAGE_NAME` and `REPO_ORGANIZATION` variable inside the `image-template.env`
-
-To commit and push all the files changed and added in step 2 into your Github repository:
-```bash
-git add Containerfile image-template.env cosign.pub
-git commit -m "Initial Setup"
-git push
-```
-Once pushed, go look at the Actions tab on your Github repository's page.  The green checkmark should be showing on the top commit, which means your new image is ready!
+Linux-surface forked to work with f44 7.1.3
+- https://github.com/orthogonaleety/linux-surface
 
 ## Step 3: Switch to Your Image
 
 From your bootc system, run the following command substituting in your Github username and image name where noted.
 ```bash
-sudo bootc switch ghcr.io/<username>/<image_name>
+sudo bootc switch ghcr.io/phcreery/myblue
 ```
 This should queue your image for the next reboot, which you can do immediately after the command finishes. You have officially set up your custom image! See the following section for an explanation of the important parts of the template for customization.
 

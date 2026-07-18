@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "::group:: ===$(basename "$0")==="
+
+# https://github.com/ublue-os/bluefin/blob/main/build_files/base/04-packages.sh
+
 # Packages can be installed from any enabled yum repo on the image.
 # RPMfusion repos are available by default in ublue main images
 # List of rpmfusion packages can be found here:
@@ -32,8 +36,8 @@ dnf -y remove \
 ### Install
 
 # Install additional fedora packages
-ADDITIONAL_FEDORA_PACKAGES=(
-    niri
+FEDORA_PACKAGES=(
+    # niri
     code
     ghostty
     ghostty-bash-completion
@@ -43,8 +47,24 @@ ADDITIONAL_FEDORA_PACKAGES=(
     # ghostty-nautilus
 )
 
-dnf -y install --skip-unavailable \
-    "${ADDITIONAL_FEDORA_PACKAGES[@]}"
+echo "Installing ${#FEDORA_PACKAGES[@]} packages from Fedora repos..."
+dnf -y install --skip-unavailable "${FEDORA_PACKAGES[@]}"
+
+# Packages to exclude - common to all versions
+EXCLUDED_PACKAGES=(
+    firefox
+)
+
+# Remove excluded packages if they are installed
+if [[ "${#EXCLUDED_PACKAGES[@]}" -gt 0 ]]; then
+    readarray -t INSTALLED_EXCLUDED < <(rpm -qa --queryformat='%{NAME}\n' "${EXCLUDED_PACKAGES[@]}" 2>/dev/null || true)
+    if [[ "${#INSTALLED_EXCLUDED[@]}" -gt 0 ]]; then
+        dnf -y remove "${INSTALLED_EXCLUDED[@]}"
+    else
+        echo "No excluded packages found to remove."
+    fi
+fi
+
 
 
 # Use a COPR Example:

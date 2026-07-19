@@ -18,7 +18,7 @@ cp -avf "/ctx/system_files"/. /
 
 ### Install linux-surface kernel and support
 # if [[ "${IMAGE_NAME}" =~ surface ]]; then
-# /ctx/build_files/02-surface.sh
+/ctx/build_files/02-surface.sh
 # fi
 
 ### Install flatpacks

@@ -12,8 +12,7 @@ echo "::group:: ===$(basename "$0")==="
 # ublue staging and packages repos needed for misc packages provided by ublue
 dnf -y copr enable ublue-os/packages
 dnf -y copr enable ublue-os/staging
-dnf -y copr enable lionheartp/Hyprland # noctalia
-
+source /ctx/build_files/shared/copr-helpers.sh
 
 ### REPO
 
@@ -27,7 +26,7 @@ gpgcheck=1
 gpgkey=https://packages.microsoft.com/keys/microsoft.asc
 EOF
 
-# ghostty
+# for ghostty
 dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 
 ### Uninstall
@@ -39,8 +38,28 @@ dnf -y remove \
 
 # Install additional fedora packages
 FEDORA_PACKAGES=(
+    adw-gtk3-theme
+    adwaita-fonts-all
+    bootc
+    borgbackup
+    containerd
+    fastfetch
+    gcc
+    gcc-c++
+    input-remapper
+    jetbrains-mono-fonts-all
+    libratbag-ratbagd
+    make
+    powerstat
+    powertop
+    rclone
+    restic
+    samba
+    tmux
+    wl-clipboard
+    xdg-terminal-exec
+
     niri
-    noctalia-git
     code
     ghostty
     ghostty-bash-completion
@@ -55,7 +74,7 @@ dnf -y install --skip-unavailable "${FEDORA_PACKAGES[@]}"
 
 # Packages to exclude - common to all versions
 EXCLUDED_PACKAGES=(
-    firefox
+    # firefox
 )
 
 # Remove excluded packages if they are installed
@@ -76,5 +95,19 @@ fi
 # dnf5 -y install package
 # Disable COPRs so they don't end up enabled on the final image:
 # dnf5 -y copr disable ublue-os/staging
+#
+# OR use helper script `copr_install_isolated`
+copr_install_isolated "che/nerd-fonts" "nerd-fonts"
+# copr_install_isolated "lionheartp/Hyprland" "noctalia-shell"
+
+
+dnf -y copr enable lorbus/NetworkManager
+dnf -y upgrade 'NetworkManager*'
+
+dnf -y copr enable lorbus/network-displays
+dnf -y install gnome-network-displays gnome-network-displays-extension
+
+dnf -y copr disable lorbus/NetworkManager
+dnf -y copr disable lorbus/network-displays
 
 echo "::endgroup::"

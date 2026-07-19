@@ -9,17 +9,6 @@ echo "::group:: ===$(basename "$0")==="
 dnf config-manager addrepo --from-repofile=https://pkg.surfacelinux.com/fedora/linux-surface.repo
 dnf config-manager setopt linux-surface.enabled=0
 
-SURFACE_PACKAGES=(
-    iptsd
-    libcamera
-    libcamera-tools
-    libcamera-gstreamer
-    libcamera-ipa
-    pipewire-plugin-libcamera
-)
-
-dnf5 -y install --skip-unavailable "${SURFACE_PACKAGES[@]}"
-
 # Workaround: linux-surface has no F44 repo yet, and its repofile hardcodes
 # baseurl=.../fedora/f$releasever/, which 404s on F44. Pin to F43 until F44 is published.
 # Fail loudly rather than silently skipping the repo (upstream sets skip_if_unavailable=1).
@@ -94,7 +83,19 @@ EOF
 # (cairomm, which Fedora ships) become unresolvable.
 dnf config-manager setopt linux-surface.enabled=1
 dnf -y install --setopt=disable_excludes=* \
-    kernel-surface iptsd
+    kernel-surface
+
+SURFACE_PACKAGES=(
+    iptsd
+    libcamera
+    libcamera-tools
+    libcamera-gstreamer
+    libcamera-ipa
+    pipewire-plugin-libcamera
+)
+
+dnf5 -y install --skip-unavailable "${SURFACE_PACKAGES[@]}"
+
 dnf config-manager setopt linux-surface.enabled=0
 
 dnf versionlock add kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra

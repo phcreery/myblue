@@ -5,9 +5,10 @@ COPY system_files /system_files
 
 ### Base Image
 #
-FROM ghcr.io/ublue-os/bluefin-dx-nvidia:latest
+# FROM ghcr.io/ublue-os/bluefin-hwe-nvidia:latest
 # FROM ghcr.io/ublue-os/bluefin-dx-hwe-nvidia:latest
-FROM ghcr.io/ublue-os/bluefin-hwe-nvidia:latest
+# FROM ghcr.io/ublue-os/bluefin-dx-nvidia:latest
+FROM ghcr.io/wayblueorg/niri-nvidia:latest
 
 ## Other possible base images include:
 # FROM ghcr.io/ublue-os/bazzite:stable

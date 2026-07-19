@@ -2,29 +2,39 @@
 
 my personal fedora image
 
-This repository is meant to be a template for building your own custom [bootc](https://github.com/bootc-dev/bootc) image. This template is the recommended way to make customizations to any image published by the Universal Blue Project.
+Currently targeting MS Surface Book 2 with NVIDIA GTX 1060 Mobile. (Requires NVIDIA proprietary drivers)
 
 ## Inspo
 
-Working base
-- https://github.com/ublue-os/bluefin/pkgs/container/bluefin-hwe-nvidia
+- Working base: bluefin-hwe-nvidia:latest (F42)
+  - https://github.com/ublue-os/bluefin/pkgs/container/bluefin-hwe-nvidia
 
-- https://github.com/LorbusChris/bluespin Surface support
-- https://github.com/bsherman/bos
-- https://github.com/wayblueorg/wayblue
+  > [Note]: After a deprecation cycle the following images are now removed:
+  > 
+  >> Nvidia Closed Images: Due to Nvidia's software support changes we can no longer support the older closed modules for Nvidia cards. Not many people are using these, either migrate to the nvidia-open images or move to a stock image to use > the built in kernel drivers.
+  >>
+  >> Bluefin HWE Images: Not many people were using these, they have also been removed.
 
-Commit of bluefin-hwe-surface before it was removed
-- https://github.com/ublue-os/bluefin/tree/ed86f18028db2a016033026315a71a933263b69e
-- https://github.com/ublue-os/bluefin/blob/ed86f18028db2a016033026315a71a933263b69e/build_files/base/09-hwe-additions.sh
-- https://github.com/ublue-os/bluefin/blob/ed86f18028db2a016033026315a71a933263b69e/build_files/base/03-install-kernel-akmods.sh
-- https://github.com/ublue-os/bluefin/blob/main/build_files/base/03-install-kernel-akmods.sh
+  - Commit of bluefin-hwe-surface before it was removed
+    - https://github.com/ublue-os/bluefin/tree/ed86f18028db2a016033026315a71a933263b69e
+    - https://github.com/ublue-os/bluefin/blob/ed86f18028db2a016033026315a71a933263b69e/build_files/base/09-hwe-additions.sh
+    - https://github.com/ublue-os/bluefin/blob/ed86f18028db2a016033026315a71a933263b69e/build_files/base/03-install-kernel-akmods.sh
+    - https://github.com/ublue-os/bluefin/blob/main/build_files/base/03-install-kernel-akmods.sh
+
+- Surface continued support
+  - https://github.com/LorbusChris/bluespin
+- Misc
+  - https://github.com/bsherman/bos
+- Niri
+  - https://github.com/wayblueorg/wayblue
+- Base Nivida stupports F44 though...
+  - https://github.com/ublue-os/hwe/pkgs/container/base-nvidia
 
 
 ## Surface
 See
 - https://github.com/linux-surface/linux-surface/wiki/Installation-and-Setup#fedora-silverblue
 - https://github.com/linux-surface/linux-surface/issues/1666
-
 Linux-surface forked to work with f44 7.1.3
 - https://github.com/orthogonaleety/linux-surface
 

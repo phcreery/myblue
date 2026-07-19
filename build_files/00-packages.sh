@@ -12,6 +12,8 @@ echo "::group:: ===$(basename "$0")==="
 # ublue staging and packages repos needed for misc packages provided by ublue
 dnf -y copr enable ublue-os/packages
 dnf -y copr enable ublue-os/staging
+dnf -y copr enable lionheartp/Hyprland # noctalia
+
 
 ### REPO
 
@@ -37,7 +39,8 @@ dnf -y remove \
 
 # Install additional fedora packages
 FEDORA_PACKAGES=(
-    # niri
+    niri
+    noctalia-git
     code
     ghostty
     ghostty-bash-completion
@@ -73,3 +76,5 @@ fi
 # dnf5 -y install package
 # Disable COPRs so they don't end up enabled on the final image:
 # dnf5 -y copr disable ublue-os/staging
+
+echo "::endgroup::"

@@ -114,6 +114,6 @@ copr_install_isolated "che/nerd-fonts" "nerd-fonts"
 # dnf -y copr disable lorbus/network-displays
 
 # install nirimod
-curl -sSL https://raw.githubusercontent.com/srinivasr/nirimod/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/srinivasr/nirimod/main/install.sh | TERM=xterm bash
 
 echo "::endgroup::"

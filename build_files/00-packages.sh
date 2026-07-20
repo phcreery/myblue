@@ -27,7 +27,7 @@ gpgkey=https://packages.microsoft.com/keys/microsoft.asc
 EOF
 
 # for ghostty
-dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
+dnf -y install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 
 ### Uninstall
 

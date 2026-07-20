@@ -38,10 +38,10 @@ dnf -y remove \
 
 # Install additional fedora packages
 FEDORA_PACKAGES=(
-    adw-gtk3-theme
     adwaita-fonts-all
     bootc
     borgbackup
+    btop
     containerd
     fastfetch
     gcc
@@ -51,9 +51,6 @@ FEDORA_PACKAGES=(
     libratbag-ratbagd
     make
     micro
-    naultilus
-    powerstat
-    powertop
     rclone
     restic
     samba
@@ -106,14 +103,14 @@ copr_install_isolated "che/nerd-fonts" "nerd-fonts"
 # copr_install_isolated "lionheartp/Hyprland" "noctalia-shell"
 
 
-dnf -y copr enable lorbus/NetworkManager
-dnf -y upgrade 'NetworkManager*'
+# dnf -y copr enable lorbus/NetworkManager
+# dnf -y upgrade 'NetworkManager*'
 
-dnf -y copr enable lorbus/network-displays
-dnf -y install gnome-network-displays gnome-network-displays-extension
+# dnf -y copr enable lorbus/network-displays
+# dnf -y install gnome-network-displays gnome-network-displays-extension
 
-dnf -y copr disable lorbus/NetworkManager
-dnf -y copr disable lorbus/network-displays
+# dnf -y copr disable lorbus/NetworkManager
+# dnf -y copr disable lorbus/network-displays
 
 # install nirimod
 curl -sSL https://raw.githubusercontent.com/srinivasr/nirimod/main/install.sh | bash

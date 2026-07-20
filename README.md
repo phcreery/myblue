@@ -8,6 +8,7 @@ Currently targeting MS Surface Book 2 with NVIDIA GTX 1060 Mobile. (Requires NVI
 
 - Working base: bluefin-hwe-nvidia:latest (F42)
   - https://github.com/ublue-os/bluefin/pkgs/container/bluefin-hwe-nvidia
+  - sha256:862f774618a6d766b10992753b63897d47ef7fd6d134a09315a501871c00fcd7
 
   > [Note]: After a deprecation cycle the following images are now removed:
   > 

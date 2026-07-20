@@ -50,6 +50,8 @@ FEDORA_PACKAGES=(
     jetbrains-mono-fonts-all
     libratbag-ratbagd
     make
+    micro
+    naultilus
     powerstat
     powertop
     rclone
@@ -57,9 +59,11 @@ FEDORA_PACKAGES=(
     samba
     tmux
     wl-clipboard
+    wdisplays
     xdg-terminal-exec
 
     niri
+    noctalia
     code
     ghostty
     ghostty-bash-completion
@@ -109,5 +113,8 @@ dnf -y install gnome-network-displays gnome-network-displays-extension
 
 dnf -y copr disable lorbus/NetworkManager
 dnf -y copr disable lorbus/network-displays
+
+# install nirimod
+curl -sSL https://raw.githubusercontent.com/srinivasr/nirimod/main/install.sh | bash
 
 echo "::endgroup::"

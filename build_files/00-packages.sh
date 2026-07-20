@@ -57,6 +57,7 @@ FEDORA_PACKAGES=(
     rclone
     restic
     samba
+    stow
     tmux
     wl-clipboard
     wdisplays

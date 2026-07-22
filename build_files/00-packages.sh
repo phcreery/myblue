@@ -60,6 +60,8 @@ FEDORA_PACKAGES=(
     wl-clipboard
     wdisplays
     xdg-terminal-exec
+    xdg-desktop-portal
+    xdg-desktop-portal-wlr
 
     niri
     noctalia

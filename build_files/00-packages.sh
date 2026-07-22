@@ -70,6 +70,7 @@ FEDORA_PACKAGES=(
     ghostty-terminfo
     ghostty-vim
     # ghostty-nautilus
+    zed
 )
 
 echo "Installing ${#FEDORA_PACKAGES[@]} packages from Fedora repos..."

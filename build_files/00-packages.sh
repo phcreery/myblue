@@ -51,6 +51,7 @@ FEDORA_PACKAGES=(
     libratbag-ratbagd
     make
     micro
+    pandoc
     qalculate
     rclone
     restic

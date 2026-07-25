@@ -45,6 +45,13 @@ From your bootc system, run the following command substituting in your Github us
 ```bash
 sudo bootc switch ghcr.io/phcreery/myblue
 ```
+
+or 
+
+```bash
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/phcreery/myblue:latest
+```
+
 This should queue your image for the next reboot, which you can do immediately after the command finishes. You have officially set up your custom image! See the following section for an explanation of the important parts of the template for customization.
 
 # Repository Contents

@@ -51,6 +51,7 @@ FEDORA_PACKAGES=(
     libratbag-ratbagd
     make
     micro
+    nautilus
     pandoc
     qalculate
     rclone
@@ -63,6 +64,7 @@ FEDORA_PACKAGES=(
     xdg-terminal-exec
     xdg-desktop-portal
     xdg-desktop-portal-wlr
+    xdg-desktop-portal-gnome
 
     niri
     noctalia

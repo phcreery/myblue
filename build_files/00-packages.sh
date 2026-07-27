@@ -108,7 +108,7 @@ fi
 # OR use helper script `copr_install_isolated`
 copr_install_isolated "che/nerd-fonts" "nerd-fonts"
 # copr_install_isolated "lionheartp/Hyprland" "noctalia-shell"
-copr_install_isolated "azrdev/monaspace-fonts" "monaspace-fonts"
+# copr_install_isolated "azrdev/monaspace-fonts" "monaspace-fonts"
 
 
 # dnf -y copr enable lorbus/NetworkManager

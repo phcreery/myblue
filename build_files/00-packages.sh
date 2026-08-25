@@ -46,6 +46,7 @@ FEDORA_PACKAGES=(
     fastfetch
     gcc
     gcc-c++
+    gdu
     input-remapper
     jetbrains-mono-fonts-all
     libratbag-ratbagd

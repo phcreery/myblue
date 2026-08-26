@@ -55,6 +55,7 @@ FEDORA_PACKAGES=(
     ncdu
     nautilus
     pandoc
+    p7zip
     qalculate
     rclone
     restic

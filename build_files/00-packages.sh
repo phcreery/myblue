@@ -32,7 +32,9 @@ dnf -y install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/ter
 ### Uninstall
 
 dnf -y remove \
-    gnome-tweaks
+    gnome-tweaks \
+    swayidle \
+    swaylock
 
 ### Install
 

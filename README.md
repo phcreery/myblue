@@ -4,7 +4,44 @@ my personal fedora image
 
 Currently targeting MS Surface Book 2 with NVIDIA GTX 1060 Mobile. (Requires NVIDIA proprietary drivers)
 
-## Inspo
+# Switch to this Image
+
+From your bootc system, run the following command substituting in your Github username and image name where noted.
+
+```bash
+sudo bootc switch ghcr.io/phcreery/myblue
+sudo systemctl reboot
+```
+OR
+
+```bash
+sudo bootc switch ghcr.io/phcreery/myblue:latest
+sudo systemctl reboot
+```
+or 
+
+```bash
+sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/phcreery/myblue:latest
+sudo systemctl reboot
+```
+
+This should queue your image for the next reboot, which you can do immediately after the command finishes. You have officially set up your custom image! See the following section for an explanation of the important parts of the template for customization.
+
+
+## Update
+
+If you're already running myblue
+
+```bash
+sudo bootc upgrade
+sudo systemctl reboot
+```
+
+# Repository Contents
+
+See: https://github.com/ublue-os/image-template
+
+# Inspiration
 
 - Working base: bluefin-hwe-nvidia:latest (F42)
   - https://github.com/ublue-os/bluefin/pkgs/container/bluefin-hwe-nvidia
@@ -32,198 +69,13 @@ Currently targeting MS Surface Book 2 with NVIDIA GTX 1060 Mobile. (Requires NVI
   - https://github.com/ublue-os/hwe/pkgs/container/base-nvidia
 
 
-## Surface
+# Surface
+
 See
 - https://github.com/linux-surface/linux-surface/wiki/Installation-and-Setup#fedora-silverblue
 - https://github.com/linux-surface/linux-surface/issues/1666
 Linux-surface forked to work with f44 7.1.3
 - https://github.com/orthogonaleety/linux-surface
-
-## Step 3: Switch to Your Image
-
-From your bootc system, run the following command substituting in your Github username and image name where noted.
-```bash
-sudo bootc switch ghcr.io/phcreery/myblue
-```
-
-or 
-
-```bash
-sudo rpm-ostree rebase ostree-unverified-registry:ghcr.io/phcreery/myblue:latest
-```
-
-This should queue your image for the next reboot, which you can do immediately after the command finishes. You have officially set up your custom image! See the following section for an explanation of the important parts of the template for customization.
-
-# Repository Contents
-
-## Containerfile
-
-The [Containerfile](./Containerfile) defines the operations used to customize the selected image.This file is the entrypoint for your image build, and works exactly like a regular podman Containerfile. For reference, please see the [Podman Documentation](https://docs.podman.io/en/latest/Introduction.html).
-
-## build.sh
-
-The [build.sh](./build_files/build.sh) file is called from your Containerfile. It is the best place to install new packages or make any other customization to your system. There are customization examples contained within it for your perusal.
-
-## build.yml
-
-The [build.yml](./.github/workflows/build.yml) Github Actions workflow creates your custom OCI image and publishes it to the Github Container Registry (GHCR). By default, the image name will match the Github repository name.
-
-# Building Disk Images
-
-This template provides an out of the box workflow for creating disk images (ISO, qcow, raw) for your custom OCI image which can be used to directly install onto your machines.
-
-This template provides a way to upload the disk images that is generated from the workflow to a S3 bucket. The disk images will also be available as an artifact from the job, if you wish to use an alternate provider. To upload to S3 we use [rclone](https://rclone.org/) which is able to use [many S3 providers](https://rclone.org/s3/).
-
-## Setting Up ISO Builds
-
-The [build-disk.yml](./.github/workflows/build-disk.yml) Github Actions workflow creates a disk image from your OCI image by utilizing the [bootc-image-builder](https://osbuild.org/docs/bootc/). In order to use this workflow you must complete the following steps:
-
-1. Modify `disk_config/iso.toml` to point to your custom container image before generating an ISO image.
-2. If you changed your image name from the default in `build.yml` then in the `build-disk.yml` file edit the `IMAGE_REGISTRY`, `IMAGE_NAME` and `DEFAULT_TAG` environment variables with the correct values. If you did not make changes, skip this step.
-3. Finally, if you want to upload your disk images to S3 then you will need to add your S3 configuration to the repository's Action secrets. This can be found by going to your repository settings, under `Secrets and Variables` -> `Actions`. You will need to add the following
-  - `S3_PROVIDER` - Must match one of the values from the [supported list](https://rclone.org/s3/)
-  - `S3_BUCKET_NAME` - Your unique bucket name
-  - `S3_ACCESS_KEY_ID` - It is recommended that you make a separate key just for this workflow
-  - `S3_SECRET_ACCESS_KEY` - See above.
-  - `S3_REGION` - The region your bucket lives in. If you do not know then set this value to `auto`.
-  - `S3_ENDPOINT` - This value will be specific to the bucket as well.
-
-Once the workflow is done, you'll find the disk images either in your S3 bucket or as part of the summary under `Artifacts` after the workflow is completed.
-
-# Artifacthub
-
-This template comes with the necessary tooling to index your image on [artifacthub.io](https://artifacthub.io). Use the `artifacthub-repo.yml` file at the root to verify yourself as the publisher. This is important to you for a few reasons:
-
-- The value of artifacthub is it's one place for people to index their custom images, and since we depend on each other to learn, it helps grow the community. 
-- You get to see your pet project listed with the other cool projects in Cloud Native.
-- Since the site puts your README front and center, it's a good way to learn how to write a good README, learn some marketing, finding your audience, etc. 
-
-[Discussion Thread](https://universal-blue.discourse.group/t/listing-your-custom-image-on-artifacthub/6446)
-
-# Justfile Documentation
-
-The `Justfile` contains various commands and configurations for building and managing container images and virtual machine images using Podman and other utilities.
-To use it, you must have installed [just](https://just.systems/man/en/introduction.html) from your package manager or manually. It is available by default on all Universal Blue images.
-
-## Environment Variables
-
-These are all sourced from the `image-template.env` file.
-
-- `image_name`: The name of the image (default: "image-template").
-- `default_tag`: The default tag for the image (default: "latest").
-- `bib_image`: The Bootc Image Builder (BIB) image (default: "quay.io/centos-bootc/bootc-image-builder:latest").
-
-## Building The Image
-
-All these recipes will work (with default values) without supplying any arguments to them, e.g. `just build`
-
-### `just build`
-
-Builds a container image using Podman.
-
-```bash
-just build $target_image $tag
-```
-
-Arguments:
-- `$target_image`: The tag you want to apply to the image (default: `$image_name`).
-- `$tag`: The tag for the image (default: `$default_tag`).
-
-### Rechunking
-We can flatten the layers of container images to make sure there isn't a single huge layer when your image gets published.
-This does not make your image faster to download, just provides better resumability.
-
-#### `just ostree-rechunk`
-Rechunks the existing Image with [rpm-ostree](https://coreos.github.io/rpm-ostree/build-chunked-oci/)
-
-```bash
-just ostree-rechunk $target_image $tag
-```
-
-#### `just rechunk`
-Rechunks the existing Image with [chunkah](https://github.com/coreos/chunkah), this is probably gonna be the default here at some point, try it out, it's cool.
-
-```bash
-just rechunk $target_image $tag
-```
-
-### Switching to the locally built image for testing
-
-The image has to be in the containers-storage owned by root, to be able to rebase to it, see the `_rootful_load_image` recipe.
-
-`sudo just build` and `sudo just ostree-rechunk` builds directly as root and allows you to skip the transfer to the root containers-storage.
-
-You can rebase to all the images that are in your containers-storage:
-
-```
-sudo podman image list --filter=label=containers.bootc=1
-```
-
-See [man bootc switch](https://bootc.dev/bootc/man/bootc-switch.8.html) for more info.
-
-```
-sudo bootc switch --transport containers-storage localhost/myimage:latest
-```
-
-and reboot your system!
-
-## Building and Running Virtual Machines and ISOs
-
-The below commands all build QCOW2 images. To produce or use a different type of image, substitute in the command with that type in the place of `qcow2`. The available types are `qcow2`, `iso`, and `raw`.
-
-### `just build-qcow2`
-
-Builds a QCOW2 virtual machine image.
-
-```bash
-just build-qcow2 $target_image $tag
-```
-
-### `just rebuild-qcow2`
-
-Rebuilds a QCOW2 virtual machine image.
-
-```bash
-just rebuild-vm $target_image $tag
-```
-
-### `just run-vm-qcow2`
-
-Runs a virtual machine from a QCOW2 image.
-
-```bash
-just run-vm-qcow2 $target_image $tag
-```
-
-### `just spawn-vm`
-
-Runs a virtual machine using systemd-vmspawn.
-
-```bash
-just spawn-vm rebuild="0" type="qcow2" ram="6G"
-```
-
-## File Management
-
-### `just check`
-
-Checks the syntax of all `.just` files and the `Justfile`.
-
-### `just fix`
-
-Fixes the syntax of all `.just` files and the `Justfile`.
-
-### `just clean`
-
-Cleans the repository by removing build artifacts.
-
-### `just lint`
-
-Runs shell check on all Bash scripts.
-
-### `just format`
-
-Runs shfmt on all Bash scripts.
 
 ## Additional resources
 

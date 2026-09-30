@@ -21,6 +21,9 @@ cp -avf "/ctx/system_files"/. /
 /ctx/build_files/02-surface.sh
 # fi
 
+### Build the Nvidia kmod for the Surface kernel (must run after 02-surface.sh)
+/ctx/build_files/04-nvidia-surface-kmod.sh
+
 ### Install flatpacks
 /ctx/build_files/03-flatpacks.sh
 

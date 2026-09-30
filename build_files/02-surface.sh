@@ -98,7 +98,7 @@ dnf5 -y install --skip-unavailable "${SURFACE_PACKAGES[@]}"
 
 dnf config-manager setopt linux-surface.enabled=0
 
-dnf versionlock add kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra
+dnf versionlock add kernel-surface kernel-surface-core kernel-surface-modules kernel-surface-modules-core kernel-surface-modules-extra
 
 # Regenerate initramfs
 KERNEL_SUFFIX=""

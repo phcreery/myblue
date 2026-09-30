@@ -27,6 +27,13 @@ sudo systemctl reboot
 
 This should queue your image for the next reboot, which you can do immediately after the command finishes. You have officially set up your custom image! See the following section for an explanation of the important parts of the template for customization.
 
+## Local build and switch
+
+```bash
+sudo -E just build
+sudo bootc switch --transport containers-storage localhost/myblue:latest
+sudo systemctl reboot
+```
 
 ## Update
 

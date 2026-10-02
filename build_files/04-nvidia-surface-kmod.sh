@@ -21,16 +21,6 @@ dnf config-manager setopt linux-surface.enabled=0
 
 KERNEL_VERSION="$(rpm -q kernel-surface --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"
 
-# 02-surface.sh erased the Fedora kernel, but the base image's kmod-nvidia (and
-# the kernel's depmod output) keeps a second /usr/lib/modules tree alive.
-# `bootc container lint` requires exactly one subdirectory there, and the module
-# is useless without its kernel anyway, so drop the package and any orphaned
-# module trees.
-dnf -y remove --setopt=clean_requirements_on_remove=False kmod-nvidia || true
-for module_dir in /usr/lib/modules/*; do
-    [[ "$(basename "$module_dir")" == "$KERNEL_VERSION" ]] || rm -rf "$module_dir"
-done
-
 # Guard against drifting away from the Pascal-capable 580 branch. If the base
 # image ever moves to a newer driver, the LTS repo below no longer matches and
 # the kmod would refuse to link against the installed userspace.
@@ -93,6 +83,23 @@ require_nvidia_kmod
 # The akmod bundles ~160 MB of driver source; the built kmod is a separate RPM,
 # so drop the source to keep image/update size down.
 dnf -y remove --setopt=clean_requirements_on_remove=False akmod-nvidia
+require_nvidia_kmod
+
+# Now that the Surface kmod (which also Provides nvidia-kmod) is installed, the
+# base image's kmod-nvidia for the erased Fedora kernel is redundant. Removing
+# it keeps nvidia-kmod-common/nvidia-driver satisfied via the Surface kmod.
+dnf -y remove --setopt=clean_requirements_on_remove=False kmod-nvidia || true
+
+# Installing akmods pulled the Fedora kernel-devel/core back in (akmods depends
+# on kernel-devel-matched). Erase those again and drop every module tree that
+# isn't the Surface kernel's: `bootc container lint` requires exactly one
+# subdirectory under /usr/lib/modules.
+for pkg in kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-devel kernel-devel-matched; do
+    rpm -q "$pkg" >/dev/null 2>&1 && rpm --erase "$pkg" --nodeps || true
+done
+for module_dir in /usr/lib/modules/*; do
+    [[ "$(basename "$module_dir")" == "$KERNEL_VERSION" ]] || rm -rf "$module_dir"
+done
 require_nvidia_kmod
 
 # Keep the LTS repo from leaking into the final image.

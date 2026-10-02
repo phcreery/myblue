@@ -21,6 +21,16 @@ dnf config-manager setopt linux-surface.enabled=0
 
 KERNEL_VERSION="$(rpm -q kernel-surface --queryformat '%{VERSION}-%{RELEASE}.%{ARCH}')"
 
+# 02-surface.sh erased the Fedora kernel, but the base image's kmod-nvidia (and
+# the kernel's depmod output) keeps a second /usr/lib/modules tree alive.
+# `bootc container lint` requires exactly one subdirectory there, and the module
+# is useless without its kernel anyway, so drop the package and any orphaned
+# module trees.
+dnf -y remove --setopt=clean_requirements_on_remove=False kmod-nvidia || true
+for module_dir in /usr/lib/modules/*; do
+    [[ "$(basename "$module_dir")" == "$KERNEL_VERSION" ]] || rm -rf "$module_dir"
+done
+
 # Guard against drifting away from the Pascal-capable 580 branch. If the base
 # image ever moves to a newer driver, the LTS repo below no longer matches and
 # the kmod would refuse to link against the installed userspace.
